@@ -1,0 +1,3 @@
+parameters:
+  openshift_prometheus_proxy:
+    namespace: syn-openshift-prometheus-proxy

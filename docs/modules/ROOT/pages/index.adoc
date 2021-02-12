@@ -1,0 +1,5 @@
+= openshift-prometheus-proxy
+
+openshift-prometheus-proxy is a Commodore component to manage openshift-prometheus-proxy.
+
+See the xref:references/parameters.adoc[parameters] reference for further details.
