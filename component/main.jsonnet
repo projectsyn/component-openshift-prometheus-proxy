@@ -15,7 +15,13 @@ local openshift_templates =
     'openshift-prometheus-proxy/manifests/template.yaml'
   ));
 
+local routeFilter(rendered) =
+  std.filter(
+    function(it) !(it.kind == 'Route' && !params.route_enabled),
+    rendered
+  );
+
 {
-  [t.template_name]: t.rendered_template
+  [t.template_name]: routeFilter(t.rendered_template)
   for t in [ (r { template:: t }) for t in openshift_templates ]
 }
