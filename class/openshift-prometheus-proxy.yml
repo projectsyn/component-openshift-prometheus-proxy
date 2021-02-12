@@ -1,5 +1,9 @@
 parameters:
   kapitan:
+    dependencies:
+      - type: https
+        source: https://raw.githubusercontent.com/appuio/openshift-prometheus-proxy/master/template/openshift-prometheus-proxy.yaml
+        output_path: dependencies/openshift-prometheus-proxy/manifests/template.yaml
     compile:
       - input_paths:
           - openshift-prometheus-proxy/component/app.jsonnet

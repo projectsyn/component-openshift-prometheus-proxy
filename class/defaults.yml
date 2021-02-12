@@ -1,3 +1,9 @@
 parameters:
   openshift_prometheus_proxy:
     namespace: syn-openshift-prometheus-proxy
+    template_parameters:
+      OPENSHIFT_PROMETHEUS_PROXY_UPSTREAM: https://prometheus-k8s.openshift-monitoring.svc:9091
+      OPENSHIFT_PROMETHEUS_PROXY_TLS_VERIFY: "service"
+      OPENSHIFT_PROMETHEUS_PROXY_HOSTNAME: openshift-prometheus-proxy.example.com
+      OPENSHIFT_PROMETHEUS_PROXY_SESSION_SECRET: ?{vaultkv:${customer:name}/${cluster:name}/openshift-prometheus-proxy/session-secret}
+    route_enabled: false
