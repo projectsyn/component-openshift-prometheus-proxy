@@ -14,7 +14,7 @@ local r = renderer.OpenShiftTemplateRenderer {
 // templates defined in the loaded YAML file.
 local openshift_templates =
   std.parseJson(kap.yaml_load_stream(
-    'openshift-prometheus-proxy/manifests/template.yaml'
+    'openshift-prometheus-proxy/manifests/%s/template.yaml' % params.version
   ));
 
 local rendered = [ (r { template:: t }) for t in openshift_templates ];

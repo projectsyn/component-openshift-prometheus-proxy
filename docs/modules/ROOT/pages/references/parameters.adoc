@@ -34,6 +34,14 @@ default:: `false`
 
 Whether to generate an OpenShift route object for the proxy.
 
+== `version`
+
+[horizontal]
+type:: boolean
+default:: https://github.com/appuio/openshift-prometheus-proxy/tree/1ed15714a0039221e6067ea6e218593f08c1d8b1[`1ed15714a0039221e6067ea6e218593f08c1d8b1`]
+
+This parameter specifies which version of the upstream repository (as a Git tree-ish) to use when rendering the component.
+
 == Example
 
 [source,yaml]
