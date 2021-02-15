@@ -10,18 +10,31 @@ local r = renderer.OpenShiftTemplateRenderer {
   template_parameters:: params.template_parameters,
 };
 
+// Note: the current implementation supports rendering all OpenShift
+// templates defined in the loaded YAML file.
 local openshift_templates =
   std.parseJson(kap.yaml_load_stream(
     'openshift-prometheus-proxy/manifests/template.yaml'
   ));
 
-local routeFilter(rendered) =
-  std.filter(
-    function(it) !(it.kind == 'Route' && !params.route_enabled),
-    rendered
-  );
+local rendered = [ (r { template:: t }) for t in openshift_templates ];
 
-{
-  [t.template_name]: routeFilter(t.rendered_template)
-  for t in [ (r { template:: t }) for t in openshift_templates ]
-}
+local output_name(t, kind) =
+  if std.length(rendered) > 1 then
+    '%s_%s' % [ t.template_name, kind ]
+  else
+    kind;
+
+// Merge output objects if input template file had multiple templates
+std.foldl(
+  function(a, it) a + it,
+  [
+    // Generate outputs from rendered template
+    {
+      [if !(kind == 'routes' && !params.route_enabled) then output_name(t, kind)]: t.rendered_kinds[kind]
+      for kind in std.objectFields(t.rendered_kinds)
+    }
+    for t in rendered
+  ],
+  {}
+)

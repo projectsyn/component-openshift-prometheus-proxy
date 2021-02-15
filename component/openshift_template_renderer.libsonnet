@@ -50,6 +50,7 @@
         for k in std.objectFields(o)
       },
 
+
     // Read this variable to extract the rendered template objects as a list
     rendered_template:
       if std.assertEqual(self.template.kind, 'Template') then
@@ -59,5 +60,21 @@
     template_name:
       if std.assertEqual(self.template.kind, 'Template') then
         self.template.metadata.name,
+
+    // Read this variable to get an object with arrays of rendered manifests
+    // for each object kind present in the template
+    rendered_kinds:
+      local kind(it) =
+        if std.assertEqual(std.objectHas(it, 'kind'), true) then
+          std.asciiLower(it.kind) + 's';
+
+      local r = self;
+      local elems = [
+        {
+          [kind(it)]+: [ it ],
+        }
+        for it in r.rendered_template
+      ];
+      std.foldl(function(a, it) a + it, elems, {}),
   },
 }
