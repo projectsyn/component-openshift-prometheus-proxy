@@ -6,7 +6,7 @@ The parent key for all of the following parameters is `openshift_prometheus_prox
 
 [horizontal]
 type:: string
-default:: `syn-openshift-prometheus-proxy`
+default:: `appuio-prometheus-proxy`
 
 The namespace in which to deploy this component.
 

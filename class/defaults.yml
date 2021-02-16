@@ -1,6 +1,6 @@
 parameters:
   openshift_prometheus_proxy:
-    namespace: syn-openshift-prometheus-proxy
+    namespace: appuio-prometheus-proxy
     template_parameters:
       OPENSHIFT_PROMETHEUS_PROXY_UPSTREAM: https://prometheus-k8s.openshift-monitoring.svc:9091
       OPENSHIFT_PROMETHEUS_PROXY_TLS_VERIFY: "service"
