@@ -28,7 +28,25 @@
       for param in std.objectFields(self.tplparams)
     ],
 
-    render_params(v):: std.foldl(function(it, f) f(it), self.paramfuns, v),
+    render_params(v)::
+      assert std.type(v) == 'string';
+      // OpenShift templates support two parameter substitution types
+      // cf. https://docs.openshift.com/container-platform/4.5/openshift_images/using-templates.html
+      if std.startsWith(v, '${{') then
+        // 1) Parameters can be referenced as a json/yaml value by placing values in the form
+        //    ${{PARAMETER_NAME}} in place of any field in the template.
+        assert std.endsWith(v, '}}');
+        local paramlen = std.length(v) - 5;
+        local param = std.substr(v, 3, paramlen);
+        // In this case, we interpret the parameter value as JSON to ensure no unwanted quoting takes
+        // place in the output.
+        std.parseJson(self.tplparams[param])
+      else
+        // 2) Parameters can be referenced as a string value by placing values in the form
+        //    ${PARAMETER_NAME} in any string field in the template.
+        // In this case, multiple parameters can be embedded in a single string, so we fold all the
+        // string replacer functions over the field.
+        std.foldl(function(it, f) f(it), self.paramfuns, v),
 
     render_tpl_list(l)::
       [
