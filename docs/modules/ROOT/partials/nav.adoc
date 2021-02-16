@@ -1,2 +1,7 @@
 * xref:index.adoc[Home]
+
+.References
 * xref:references/parameters.adoc[Parameters]
+
+.How-Tos
+* xref:how-tos/grant-access.adoc[Grant a client access to the proxy]
