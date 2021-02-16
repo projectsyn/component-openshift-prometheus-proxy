@@ -7,4 +7,4 @@ parameters:
       OPENSHIFT_PROMETHEUS_PROXY_HOSTNAME: openshift-prometheus-proxy.example.com
       OPENSHIFT_PROMETHEUS_PROXY_SESSION_SECRET: ?{vaultkv:${customer:name}/${cluster:name}/openshift-prometheus-proxy/session-secret}
     route_enabled: false
-    version: 1ed15714a0039221e6067ea6e218593f08c1d8b1
+    version: 6d95911207863fa3a5b8500720fc1c92e19ed445
