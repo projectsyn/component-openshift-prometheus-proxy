@@ -1,4 +1,5 @@
 local kap = import 'lib/kapitan.libjsonnet';
+local kube = import 'lib/kube.libjsonnet';
 local renderer = import 'openshift_template_renderer.libsonnet';
 
 local inv = kap.inventory();
@@ -38,4 +39,38 @@ local output_name(t, kind) =
       ],
       {}
     ),
+  // The proxy SA needs ClusterRoles 'system:auth-delegator' to check incoming token
+  // permissions and 'cluster-monitoring-view' to access openshift-monitoring
+  rbac: [
+    kube.ClusterRoleBinding('%s-auth-delegator' % params.namespace) {
+      roleRef: {
+        apiGroup: 'rbac.authorization.k8s.io',
+        kind: 'ClusterRole',
+        name: 'system:auth-delegator',
+      },
+      subjects: [
+        {
+          kind: 'ServiceAccount',
+          namespace: params.namespace,
+          name: 'openshift-prometheus-proxy',
+        },
+      ],
+    },
+    kube.ClusterRoleBinding(
+      '%s-cluster-monitoring-view' % params.namespace
+    ) {
+      roleRef: {
+        apiGroup: 'rbac.authorization.k8s.io',
+        kind: 'ClusterRole',
+        name: 'cluster-monitoring-view',
+      },
+      subjects: [
+        {
+          kind: 'ServiceAccount',
+          namespace: params.namespace,
+          name: 'openshift-prometheus-proxy',
+        },
+      ],
+    },
+  ],
 }

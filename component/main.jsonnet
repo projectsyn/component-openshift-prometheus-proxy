@@ -9,5 +9,6 @@ local namespace = kube.Namespace(params.namespace);
 
 {
   '00_namespace': namespace,
+  proxy_rbac: template.rbac,
 }
 + template.manifests
