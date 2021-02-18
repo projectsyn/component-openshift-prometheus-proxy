@@ -60,7 +60,7 @@ If this parameter is `false`, configure network access to the proxy namespace by
 This option is provided to support OpenShift 3.11 clusters which use the multitenant network plugin.
 
 
-=== `access.service_accounts`
+=== `access.service_account_refs`
 
 [horizontal]
 type:: array
@@ -86,7 +86,7 @@ openshift_prometheus_proxy:
     OPENSHIFT_PROMETHEUS_PROXY_HOSTNAME: my-awesome-prometheus-proxy.example.org
   route_enabled: true
   access:
-    service_accounts:
+    service_account_refs:
       - namespace: cust-monitoring
         name: prometheus
 ----

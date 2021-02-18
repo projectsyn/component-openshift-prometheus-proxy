@@ -58,7 +58,7 @@ local user_access =
         namespace: s.namespace,
         name: s.name,
       }
-      for s in params.access.service_accounts
+      for s in params.access.service_account_refs
     ],
   };
 

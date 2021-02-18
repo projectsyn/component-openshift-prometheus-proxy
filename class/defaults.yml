@@ -10,4 +10,4 @@ parameters:
     version: 6d95911207863fa3a5b8500720fc1c92e19ed445
     access:
       use_networkpolicy: true
-      service_accounts: []
+      service_account_refs: []
