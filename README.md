@@ -1,6 +1,6 @@
-# Commodore Component: openshift-prometheus-proxy
+# Commodore Component: OpenShift Prometheus Proxy
 
-This is a [Commodore][commodore] Component for openshift-prometheus-proxy.
+This is a [Commodore][commodore] Component for [openshift-prometheus-proxy][https://github.com/appuio/openshift-prometheus-proxy].
 
 This repository is part of Project Syn.
 For documentation on Project Syn and this component, see https://syn.tools.

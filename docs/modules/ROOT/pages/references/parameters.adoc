@@ -6,14 +6,49 @@ The parent key for all of the following parameters is `openshift_prometheus_prox
 
 [horizontal]
 type:: string
-default:: `syn-openshift-prometheus-proxy`
+default:: `appuio-prometheus-proxy`
 
 The namespace in which to deploy this component.
 
+== `template_parameters`
+
+[horizontal]
+type:: dict
+default::
++
+[source,yaml]
+----
+OPENSHIFT_PROMETHEUS_PROXY_UPSTREAM: https://prometheus-k8s.openshift-monitoring.svc:9091
+OPENSHIFT_PROMETHEUS_PROXY_TLS_VERIFY: "service"
+OPENSHIFT_PROMETHEUS_PROXY_HOSTNAME: openshift-prometheus-proxy.example.com
+OPENSHIFT_PROMETHEUS_PROXY_SESSION_SECRET: ?{vaultkv:${customer:name}/${cluster:name}/openshift-prometheus-proxy/session-secret}
+----
+
+Parameters used to render the OpenShift template provided as part of https://github.com/appuio/openshift-prometheus-proxy[OpenShift Prometheus Proxy]
+
+== `route_enabled`
+
+[horizontal]
+type:: boolean
+default:: `false`
+
+Whether to generate an OpenShift route object for the proxy.
+
+== `version`
+
+[horizontal]
+type:: boolean
+default:: https://github.com/appuio/openshift-prometheus-proxy/tree/1ed15714a0039221e6067ea6e218593f08c1d8b1[`1ed15714a0039221e6067ea6e218593f08c1d8b1`]
+
+This parameter specifies which version of the upstream repository (as a Git tree-ish) to use when rendering the component.
 
 == Example
 
 [source,yaml]
 ----
-namespace: example-namespace
+openshift_prometheus_proxy:
+  namespace: example-namespace
+  template_parameters:
+    OPENSHIFT_PROMETHEUS_PROXY_HOSTNAME: my-awesome-prometheus-proxy.example.org
+  route_enabled: true
 ----

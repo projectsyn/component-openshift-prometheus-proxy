@@ -1,10 +1,14 @@
-// main template for openshift-prometheus-proxy
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
+local template = import 'template.jsonnet';
+
 local inv = kap.inventory();
-// The hiera parameters for the component
 local params = inv.parameters.openshift_prometheus_proxy;
 
-// Define outputs below
+local namespace = kube.Namespace(params.namespace);
+
 {
+  '00_namespace': namespace,
+  proxy_rbac: template.rbac,
 }
++ template.manifests
