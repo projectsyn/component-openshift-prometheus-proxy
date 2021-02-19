@@ -8,3 +8,6 @@ parameters:
       OPENSHIFT_PROMETHEUS_PROXY_SESSION_SECRET: ?{vaultkv:${customer:name}/${cluster:name}/openshift-prometheus-proxy/session-secret}
     route_enabled: false
     version: 6d95911207863fa3a5b8500720fc1c92e19ed445
+    access:
+      use_networkpolicy: true
+      service_account_refs: []

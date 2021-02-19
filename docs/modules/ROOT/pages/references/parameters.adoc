@@ -42,6 +42,40 @@ default:: https://github.com/appuio/openshift-prometheus-proxy/tree/1ed15714a003
 
 This parameter specifies which version of the upstream repository (as a Git tree-ish) to use when rendering the component.
 
+== `access`
+
+Configure client access to the proxy.
+See xref:how-tos/grant-access.adoc[Grant a client access to the proxy] for a more detailed guide on access configuration.
+
+=== `access.use_networkpolicy`
+
+[horizontal]
+type:: boolean
+default:: `true`
+
+If this parameter is `true`, configure network access to the proxy namespace with a network policy.
+That network policy allows access to the proxy namespace from all namespaces labelled with `appuio.ch/prometheus-proxy=allowed`.
+
+If this parameter is `false`, configure network access to the proxy namespace by setting its network ID to 0.
+This option is provided to support OpenShift 3.11 clusters which use the multitenant network plugin.
+
+
+=== `access.service_account_refs`
+
+[horizontal]
+type:: array
+default:: `[]`
+
+The contents of this array are used to create RBAC rules to allow client service accounts access to the Prometheus proxy.
+
+The format of each array entry must be
+
+[source,yaml]
+----
+namespace: cust-namespace
+name: service-account-name
+----
+
 == Example
 
 [source,yaml]
@@ -51,4 +85,8 @@ openshift_prometheus_proxy:
   template_parameters:
     OPENSHIFT_PROMETHEUS_PROXY_HOSTNAME: my-awesome-prometheus-proxy.example.org
   route_enabled: true
+  access:
+    service_account_refs:
+      - namespace: cust-monitoring
+        name: prometheus
 ----

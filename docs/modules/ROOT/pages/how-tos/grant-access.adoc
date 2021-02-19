@@ -1,0 +1,33 @@
+= Grant a client access to the proxy
+
+== Service access restrictions
+
+The proxy is exposed inside the cluster as an OpenShift service (secured with a service-CA signed certificate).
+
+By default, the component deploys a `NetworkPolicy` which allows traffic from namespaces labelled with `appuio.ch/prometheus-proxy=allowed`.
+Enable access by executing
+
+[source,shell]
+----
+kubectl label ns cust-monitoring appuio.ch/prometheus-proxy=allowed --overwrite
+----
+
+If `parameters.openshift_prometheus_proxy.access.use_networkpolicy` is set to `false` (this is required for clusters which use the multitenant network plugin), the component instead configures the proxy namespace's network ID to 0.
+On such a cluster, even though the proxy service is accessible from all namespaces, only service accounts which are <<_rbac_rules_for_client_service_accounts,explicitly granted access>> can retrieve Prometheus metrics through the proxy.
+
+== RBAC rules for client service accounts
+
+By default, clients cannot access Prometheus through the proxy, as the proxy checks whether client tokens have been granted access.
+
+Client service accounts are granted access to the proxy by the component if they're listed in `parameters.openshift_prometheus_proxy.access.service_account_refs`:
+
+.c-cluster-1234.yaml
+[source,yaml]
+----
+parameters:
+  openshift_prometheus_proxy:
+    access:
+      service_account_refs:
+        - namespace: cust-monitoring
+          name: prometheus
+----
